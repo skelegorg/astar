@@ -75,6 +75,19 @@ class NEIGHBOR
 	def i() @i end
 end
 
+class VISITEDNODE
+	def initialize(ind, g, f, prev)
+		@index = ind
+		@g_score = g
+		@f_score = f
+		@previous = prev
+	end
+	def index() @index end
+	def g_score() @g_score end
+	def f_score() @f_score end
+	def previous() @previous end
+end
+
 class MAZE
 	def initialize(_2darr, startind, endind)
 		# creates maze
