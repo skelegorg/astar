@@ -28,6 +28,9 @@ def astar(maze)
 		end
 	end
 
+	pairs = []
+	pair = Struct.new(:v, :obj)
+
 	unvisited = []
 	visited = []
 
@@ -56,10 +59,10 @@ def astar(maze)
 		row.each_with_index do |node, xindex|
 			if(node.is_starting?)
 				# initialize with g-score of 0 and f-score of h
-				unvisited << VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil)
+				unvisited << pair.new(VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil), nodes[node.index])
 			else
 				# put enter infinity values
-				unvisited << VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil)
+				unvisited << pair.new(VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil), nodes[node.index])
 			end
 		end
 	end
@@ -76,18 +79,18 @@ def astar(maze)
 		lowcheck = nil
 		unvisited.each do |item|
 			if(lowcheck == nil)
-				lowcheck = item
+				lowcheck = item.v
 			end
-			if(item.f_score < lowcheck.f_score)
-				lowcheck = item
+			if(item.v.f_score < lowcheck.f_score)
+				lowcheck = item.v
 			end
 		end
 		currentnode = lowcheck
-		currentnodeobj = nodes[currentnode.index]
+		currentnodeobj = unvisited[lowcheck.index].obj
 
 		# check neighboring nodes for the target
 		currentnodeobj.neighbor_list.each do |node|
-			if(node.is_ending?)
+			if(nodes[node.i[:index]].is_ending?)
 				solved = true
 			end
 		end
@@ -97,17 +100,18 @@ def astar(maze)
 		neighbors = []
 		# if a neighbor node is in unvisited, evaluate g- and f-scores and add a previous node
 		currentnodeobj.neighbor_list.each do |node|
-			if(unvisited.include? {|obj| obj[0] == node.index})
+			if(unvisited.any? {|obj| obj.v.index == node.i[:index]})
 				# add to g-score
-				obj[1] = currentnode[1] + 1.0
+				unvisited[node.i[:index]].v.g_score = currentnode.g_score + 1.0
 				# evaluate f-score
-				obj[2] = obj[1] + h(starting, [currentnodeobj.x, currentnodeobj.y])
+				unvisited[node.i[:index]].v.f_score = unvisited[node.i[:index]].v.g_score + h(starting, [currentnodeobj.x, currentnodeobj.y])
 				# set previous node
-				obj[3] = currentnode[0]
+				unvisited[node.i[:index]].v.previous = currentnode.index
 			end
 		end
 		traversed << currentnode
 	end
+	puts "found lol"
 end
 
 

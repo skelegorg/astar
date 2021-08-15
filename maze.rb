@@ -76,16 +76,13 @@ class NEIGHBOR
 end
 
 class VISITEDNODE
+	attr_accessor :index, :g_score, :f_score, :previous
 	def initialize(ind, g, f, prev)
 		@index = ind
 		@g_score = g
 		@f_score = f
 		@previous = prev
 	end
-	def index() @index end
-	def g_score() @g_score end
-	def f_score() @f_score end
-	def previous() @previous end
 end
 
 class MAZE
