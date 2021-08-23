@@ -65,6 +65,7 @@ class EMPTYNODE
 	end
 	def is_starting?() false end
 	def is_ending?() false end
+	def neighbor_list() nil end
 end
 
 class NEIGHBOR
@@ -150,4 +151,13 @@ class MAZE
 		end
 	end
 	def maze() @maze end
+	def print()
+		self.maze.each do |row|
+			outp = ""
+			row.each do |node|
+				outp += node.to_s
+			end
+			puts outp
+		end
+	end
 end

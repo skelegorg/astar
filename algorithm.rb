@@ -57,12 +57,15 @@ def astar(maze)
 	# due to this structure, the initial indexes of the unvisited array are equivilant with their respective node indexes, if thats worth anything whatsoever
 	maze.maze.each_with_index do |row, yindex|
 		row.each_with_index do |node, xindex|
-			if(node.is_starting?)
-				# initialize with g-score of 0 and f-score of h
-				unvisited << pair.new(VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil), nodes[node.index])
-			else
-				# put enter infinity values
-				unvisited << pair.new(VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil), nodes[node.index])
+			# the program can only travel to nodes, no need to create objects for walls.
+			if(node.is_a? NODE)
+				if(node.is_starting?)
+					# initialize with g-score of 0 and f-score of h
+					unvisited << pair.new(VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil), nodes[node.index])
+				else
+					# put enter infinity values
+					unvisited << pair.new(VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil), nodes[node.index])
+				end
 			end
 		end
 	end
@@ -86,6 +89,8 @@ def astar(maze)
 			end
 		end
 		currentnode = lowcheck
+		puts lowcheck
+		currentitem = unvisited[lowcheck.index]
 		currentnodeobj = unvisited[lowcheck.index].obj
 
 		# check neighboring nodes for the target
@@ -110,13 +115,9 @@ def astar(maze)
 			end
 		end
 		traversed << currentnode
+		visited << currentitem
+		unvisited.delete(currentitem)
+		puts visited
 	end
 	puts "found lol"
 end
-
-
-
-
-
-
-

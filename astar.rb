@@ -25,12 +25,6 @@ maze = MAZE.new(mazetemplate, 3, 58)
 
 # puts "Key:\nSS: starting node\nEE: ending node\n██: wall (not traversable)\n "
 
-maze.maze.each do |row|
-	outp = ""
-	row.each do |node|
-		outp += node.to_s
-	end
-	puts outp
-end
+# maze.print
 
 astar(maze)
