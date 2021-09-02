@@ -27,6 +27,7 @@ def solve(maze)
 		end
 		puts outp
 	end
+	puts ""
 end
 
 
@@ -42,11 +43,23 @@ mazetemplate = [
 	[0, 0, 1, 0, 0, 0, 0, 0]
 ]
 
+mazetemplate2 = [
+	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+	[0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+	[0, 0, 1, 1, 0, 1, 0, 1, 0, 0],
+	[0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+	[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+]
+
 maze = MAZE.new(mazetemplate, 3, 58)
+maze2 = MAZE.new(mazetemplate2, 1, 72)
 
 # puts maze.maze[1][2].neighbor_list[0].i[:index]
 
 # puts "Key:\nSS: starting node\nEE: ending node\n██: wall (not traversable)\n "
 
 solve(maze)
-
+solve(maze2)

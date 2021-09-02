@@ -134,7 +134,6 @@ def astar(maze)
 		visited << currentitem
 		unvisited.delete(currentitem)
 	end
-	puts "found lol"
 	# traverse visited list backwards, linking the nodes it took together
 	path = []
 	foundstart = false
