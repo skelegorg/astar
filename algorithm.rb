@@ -97,7 +97,6 @@ def astar(maze)
 			end
 		end
 		currentnode = lowcheck
-		puts lowcheck
 		currentitem = nil
 		unvisited.each do |item|
 			if(item.obj.index == lowcheck.index)
@@ -153,7 +152,6 @@ def astar(maze)
 			end
 		end
 	end
-	path.reverse().each do |item|
-		puts item.v.index
-	end
+	path.reverse()
+	path
 end
