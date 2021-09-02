@@ -32,6 +32,8 @@ def astar(maze)
 	pair = Struct.new(:v, :obj)
 
 	unvisited = []
+	# for array index association
+	unvisitedgrid = []
 	visited = []
 
 	# find ending and starting nodes
@@ -61,11 +63,17 @@ def astar(maze)
 			if(node.is_a? NODE)
 				if(node.is_starting?)
 					# initialize with g-score of 0 and f-score of h
-					unvisited << pair.new(VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil), nodes[node.index])
+					nowde = pair.new(VISITEDNODE.new(node.index, 0.0, h(starting, ending), nil), nodes[node.index])
+					unvisited << nowde
+					unvisitedgrid << nowde
 				else
 					# put enter infinity values
-					unvisited << pair.new(VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil), nodes[node.index])
+					nowde = pair.new(VISITEDNODE.new(node.index, Float::INFINITY, Float::INFINITY, nil), nodes[node.index])
+					unvisited << nowde
+					unvisitedgrid << nowde
 				end
+			else
+				unvisitedgrid << nil
 			end
 		end
 	end
@@ -90,8 +98,14 @@ def astar(maze)
 		end
 		currentnode = lowcheck
 		puts lowcheck
-		currentitem = unvisited[lowcheck.index]
-		currentnodeobj = unvisited[lowcheck.index].obj
+		currentitem = nil
+		unvisited.each do |item|
+			if(item.obj.index == lowcheck.index)
+				currentitem = item
+			end
+		end
+		# currentitem = unvisited[lowcheck.index]
+		currentnodeobj = currentitem.obj
 
 		# check neighboring nodes for the target
 		currentnodeobj.neighbor_list.each do |node|
@@ -102,22 +116,27 @@ def astar(maze)
 
 		# evaluate neighbor nodes for g-scores and f-scores, assign previous node as current node
 		# use neighbor obj index to get the NODE from nodes[], then find proper VISITEDNODE and adjust previous node, g-, and f-scores accordingly
-		neighbors = []
 		# if a neighbor node is in unvisited, evaluate g- and f-scores and add a previous node
 		currentnodeobj.neighbor_list.each do |node|
 			if(unvisited.any? {|obj| obj.v.index == node.i[:index]})
-				# add to g-score
-				unvisited[node.i[:index]].v.g_score = currentnode.g_score + 1.0
-				# evaluate f-score
-				unvisited[node.i[:index]].v.f_score = unvisited[node.i[:index]].v.g_score + h(starting, [currentnodeobj.x, currentnodeobj.y])
-				# set previous node
-				unvisited[node.i[:index]].v.previous = currentnode.index
+				unvisited.each_with_index do |obj, index|
+					if (obj.v.index == node.i[:index])
+						# add to g-score
+						unvisited[index].v.g_score = currentnode.g_score + 1.0
+						# evaluate f-score
+						unvisited[index].v.f_score = unvisited[index].v.g_score + h(starting, [currentnodeobj.x, currentnodeobj.y])
+						# set previous node
+						unvisited[index].v.previous = currentnode.index
+					end
+				end
 			end
 		end
 		traversed << currentnode
 		visited << currentitem
 		unvisited.delete(currentitem)
-		puts visited
 	end
 	puts "found lol"
+	visited.each do |obj|
+		puts obj.v.index
+	end
 end

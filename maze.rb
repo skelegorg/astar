@@ -84,6 +84,9 @@ class VISITEDNODE
 		@f_score = f
 		@previous = prev
 	end
+	def index
+		@index
+	end
 end
 
 class MAZE
