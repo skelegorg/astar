@@ -136,7 +136,24 @@ def astar(maze)
 		unvisited.delete(currentitem)
 	end
 	puts "found lol"
-	visited.each do |obj|
-		puts obj.v.index
+	# traverse visited list backwards, linking the nodes it took together
+	path = []
+	foundstart = false
+	curnode = visited[-1]
+	while(!foundstart)
+		# start at last node, track the previous node all the way back to the beginning
+		path << curnode
+		if(curnode.obj.is_starting?)
+			foundstart = true
+		end
+		sindex = curnode.v.previous
+		visited.each do |item|
+			if(item.v.index == sindex)
+				curnode = item
+			end
+		end
+	end
+	path.reverse().each do |item|
+		puts item.v.index
 	end
 end
